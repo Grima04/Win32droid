@@ -103,10 +103,10 @@ public class MainActivity extends AppCompatActivity {
                     shellWriter.write("su");
                     shellWriter.newLine();
                     shellWriter.flush();
-                    shellWriter.write("cp /sdcard/Android/obb/com.grima04.win32droid/ubuntu.focal.armhf.rootfs.obb /data/data/com.grima04.win32droid/files");
+                    shellWriter.write("cp /sdcard/Android/obb/lu.grima04.win32droid/ubuntu.focal.armhf.rootfs.obb /data/data/lu.grima04.win32droid/files");
                     shellWriter.newLine();
                     shellWriter.flush();
-                    shellWriter.write("cd /data/data/com.grima04.win32droid/files");
+                    shellWriter.write("cd /data/data/lu.grima04.win32droid/files");
                     shellWriter.newLine();
                     shellWriter.flush();
                     shellWriter.write("unzip ubuntu.focal.armhf.rootfs.obb");
@@ -353,7 +353,7 @@ public class MainActivity extends AppCompatActivity {
                 shellWriter.newLine();
                 shellWriter.flush();
                 //cd into the Ubuntu rootfs
-                shellWriter.write("cd /data/data/com.grima04.win32droid/files");
+                shellWriter.write("cd /data/data/lu.grima04.win32droid/files");
                 shellWriter.newLine();
                 shellWriter.flush();
                 //Start the chroot jail environment via premade script
