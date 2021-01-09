@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     protected static Button regedit;
     protected static long processPID = -1;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
