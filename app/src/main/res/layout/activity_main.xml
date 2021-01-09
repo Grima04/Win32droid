@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#424141"
+    tools:context="lu.grima04.win32droid.MainActivity">
+
+    <EditText
+        android:id="@+id/height"
+        android:layout_width="130dp"
+        android:layout_height="43dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginTop="21dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Custom height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cpuAffinity" />
+
+    <Button
+        android:id="@+id/regedit"
+        android:layout_width="96dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="40dp"
+        android:background="#FF0000"
+        android:backgroundTint="#FFFFFF"
+        android:text="Regedit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="#FF0000" />
+
+    <Button
+        android:id="@+id/stopEmulation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
+        android:background="#FF0000"
+        android:text="Stop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/winecfg"
+        android:layout_width="105dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="40dp"
+        android:background="#FF0000"
+        android:text="Winecfg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/disableGLSLcache"
+        android:layout_width="281dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="21dp"
+        android:text="Disable LLVMpipe GLSL cache"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/useGalliumHUD" />
+
+    <Switch
+        android:id="@+id/useGalliumHUD"
+        android:layout_width="281dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="21dp"
+        android:text="Display Gallium HUD (CPU,FPS)"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/useGL4ES" />
+
+    <Button
+        android:id="@+id/startEmulation"
+        android:layout_width="96dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:background="#FF0000"
+        android:backgroundTint="#FFFFFF"
+        android:text="Wine"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="#FF0000" />
+
+    <Switch
+        android:id="@+id/useGL4ES"
+        android:layout_width="281dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="21dp"
+        android:text="Use GL4ES as OpenGL backend"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hardwareRendering" />
+
+    <Switch
+        android:id="@+id/hardwareRendering"
+        android:layout_width="281dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="21dp"
+        android:text="Use Hardware Rendering (LOAX)"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/softwareRendering" />
+
+    <Switch
+        android:id="@+id/softwareRendering"
+        android:layout_width="281dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="80dp"
+        android:text="Use Software Rendering (LLVMpipe)"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startEmulation" />
+
+    <TextView
+        android:id="@+id/terminalOutput"
+        android:layout_width="374dp"
+        android:layout_height="171dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="25dp"
+        android:text="Terminal:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/width" />
+
+    <EditText
+        android:id="@+id/cpuAffinity"
+        android:layout_width="282dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="21dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="CPU affinity (cpux-cpuy,cpuz)"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/disableGLSLcache" />
+
+    <EditText
+        android:id="@+id/width"
+        android:layout_width="130dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="21dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Custom width"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cpuAffinity" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
