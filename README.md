@@ -61,7 +61,7 @@ otherwise Wine just renders a small Window
 
 ----
 ## Setup:
-* Download the ubuntu.focal.armhf.rootfs.obb file from the releases tab and put it in the /storage/emulated/0/Android/obb/lu.grima04.win32droid directory. Create the directory if necessary.
+* Download the ubuntu.focal.armhf.rootfs.obb file from the releases tab and put it in the /storage/emulated/0/Android/obb/com.grima04.win32droid directory. Create the directory if necessary.
 * Download and the application APK from the newest release tab and install it
 * Launch the app and wait for the initial setup to complete (You should be able to see the extraction process in the Terminal text field at the bottom)
 * When everything is set, press the WINE button to launch Wine. To enable OpenGL, enable "Use software rendering" before pressing the WINE button

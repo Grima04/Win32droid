@@ -1,4 +1,4 @@
-package lu.grima04.win32droid;
+package com.grima04.win32droid;
 
 import org.junit.Test;
 

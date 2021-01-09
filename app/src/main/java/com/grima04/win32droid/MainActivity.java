@@ -1,6 +1,6 @@
 //win32droid, the Windows Emulator for Android based on box86
 
-package lu.grima04.win32droid;
+package com.grima04.win32droid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,8 +16,6 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.grima04.win32droid.R;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -102,10 +100,10 @@ public class MainActivity extends AppCompatActivity {
                     shellWriter.write("su");
                     shellWriter.newLine();
                     shellWriter.flush();
-                    shellWriter.write("cp /sdcard/Android/obb/lu.grima04.win32droid/ubuntu.focal.armhf.rootfs.obb /data/data/lu.grima04.win32droid/files");
+                    shellWriter.write("cp /sdcard/Android/obb/com.grima04.win32droid/ubuntu.focal.armhf.rootfs.obb /data/data/com.grima04.win32droid/files");
                     shellWriter.newLine();
                     shellWriter.flush();
-                    shellWriter.write("cd /data/data/lu.grima04.win32droid/files");
+                    shellWriter.write("cd /data/data/com.grima04.win32droid/files");
                     shellWriter.newLine();
                     shellWriter.flush();
                     shellWriter.write("unzip ubuntu.focal.armhf.rootfs.obb");
@@ -352,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
                 shellWriter.newLine();
                 shellWriter.flush();
                 //cd into the Ubuntu rootfs
-                shellWriter.write("cd /data/data/lu.grima04.win32droid/files");
+                shellWriter.write("cd /data/data/com.grima04.win32droid/files");
                 shellWriter.newLine();
                 shellWriter.flush();
                 //Start the chroot jail environment via premade script
