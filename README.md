@@ -67,3 +67,16 @@ otherwise Wine just renders a small Window
 * When everything is set, press the WINE button to launch Wine. To enable OpenGL, enable "Use software rendering" before pressing the WINE button
 * To monitor CPU usage and framerates in a graph, enable "Use Gallium HUD"
 * To launch the Wine configuration or registry edit window, press WINECFG or REGEDIT respectively
+
+----
+## Gallery:
+* Silent Hill 2
+![](https://github.com/Grima04/Win32droid/blob/master/Gallery/Silent_Hill_2_Title_Screen.jpg?raw=true)
+![](https://github.com/Grima04/Win32droid/blob/master/Gallery/Silent_Hill_2_Intro_Scene_Mirror.jpg?raw=true)
+![](https://github.com/Grima04/Win32droid/blob/master/Gallery/Silent_Hill_2_Urinal_Camera.jpg?raw=true)
+![](https://github.com/Grima04/Win32droid/blob/master/Gallery/Silent_Hill_2_Mirror_2.jpg?raw=true)
+![](https://github.com/Grima04/Win32droid/blob/master/Gallery/Silent_Hill_2_Outside_1.jpg?raw=true)
+![](https://github.com/Grima04/Win32droid/blob/master/Gallery/Silent_Hill_2_Outside_2.jpg?raw=true)
+![](https://github.com/Grima04/Win32droid/blob/master/Gallery/Silent_Hill_2_Car.jpg?raw=true)
+![](https://github.com/Grima04/Win32droid/blob/master/Gallery/Silent_Hill_2_Map.jpg?raw=true)
+![](https://github.com/Grima04/Win32droid/blob/master/Gallery/Silent_Hill_2_Toluca_Lake_Sign.jpg?raw=true)
