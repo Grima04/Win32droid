@@ -9,13 +9,13 @@
 
     <EditText
         android:id="@+id/height"
-        android:layout_width="130dp"
-        android:layout_height="43dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginTop="21dp"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="66dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Custom height"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cpuAffinity" />
 
@@ -23,11 +23,12 @@
         android:id="@+id/regedit"
         android:layout_width="96dp"
         android:layout_height="45dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="30dp"
         android:background="#FF0000"
         android:backgroundTint="#FFFFFF"
         android:text="Regedit"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:rippleColor="#FF0000" />
@@ -36,7 +37,7 @@
         android:id="@+id/stopEmulation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="90dp"
         android:background="#FF0000"
         android:text="Stop"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,9 +48,10 @@
         android:id="@+id/winecfg"
         android:layout_width="105dp"
         android:layout_height="45dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:background="#FF0000"
         android:text="Winecfg"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -58,9 +60,10 @@
         android:id="@+id/disableGLSLcache"
         android:layout_width="281dp"
         android:layout_height="23dp"
+        android:layout_marginEnd="66dp"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="21dp"
         android:text="Disable LLVMpipe GLSL cache"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/useGalliumHUD" />
 
@@ -68,9 +71,10 @@
         android:id="@+id/useGalliumHUD"
         android:layout_width="281dp"
         android:layout_height="23dp"
+        android:layout_marginEnd="66dp"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="21dp"
         android:text="Display Gallium HUD (CPU,FPS)"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/useGL4ES" />
 
@@ -78,11 +82,12 @@
         android:id="@+id/startEmulation"
         android:layout_width="96dp"
         android:layout_height="45dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
         android:background="#FF0000"
         android:backgroundTint="#FFFFFF"
         android:text="Wine"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:rippleColor="#FF0000" />
@@ -91,9 +96,10 @@
         android:id="@+id/useGL4ES"
         android:layout_width="281dp"
         android:layout_height="23dp"
+        android:layout_marginEnd="66dp"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="21dp"
         android:text="Use GL4ES as OpenGL backend"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hardwareRendering" />
 
@@ -101,9 +107,10 @@
         android:id="@+id/hardwareRendering"
         android:layout_width="281dp"
         android:layout_height="23dp"
+        android:layout_marginEnd="66dp"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="21dp"
         android:text="Use Hardware Rendering (LOAX)"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/softwareRendering" />
 
@@ -111,18 +118,20 @@
         android:id="@+id/softwareRendering"
         android:layout_width="281dp"
         android:layout_height="23dp"
+        android:layout_marginEnd="66dp"
         android:layout_marginStart="64dp"
         android:layout_marginTop="80dp"
         android:text="Use Software Rendering (LLVMpipe)"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/startEmulation" />
 
     <TextView
         android:id="@+id/terminalOutput"
-        android:layout_width="374dp"
-        android:layout_height="171dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="25dp"
+        android:layout_width="377dp"
+        android:layout_height="108dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="Terminal:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/width" />
@@ -131,23 +140,25 @@
         android:id="@+id/cpuAffinity"
         android:layout_width="282dp"
         android:layout_height="43dp"
+        android:layout_marginEnd="66dp"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="21dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="CPU affinity (cpux-cpuy,cpuz)"
+        android:text="CPU affinity (syntax: cpu0-cpu4,cpu8)"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/disableGLSLcache" />
 
     <EditText
         android:id="@+id/width"
-        android:layout_width="130dp"
-        android:layout_height="43dp"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="21dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Custom width"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cpuAffinity" />
 
