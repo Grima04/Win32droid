@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         terminal = (TextView) findViewById(R.id.terminalOutput);
+        terminal.setMovementMethod(new ScrollingMovementMethod());
         start = (Button) findViewById(R.id.startEmulation);
         stop = (Button) findViewById(R.id.stopEmulation);
         winecfg = (Button) findViewById(R.id.winecfg);
@@ -225,20 +227,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static void printConsoleOutput(Process process, TextView textView){
-        InputStream console = process.getInputStream();
+        InputStream consoleOut = process.getInputStream();
+        InputStream consoleError = process.getErrorStream();
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                byte[] buffer = new byte[2048];
+                byte[] outBuffer = new byte[2048];
+                byte[] errorBuffer = new byte[2048];
                 int len = -1;
                 while(printConsole){
                     try {
-                        if (!((len = console.read(buffer)) > 0)) break;
+                        if (!((len = consoleOut.read(outBuffer)) > 0)) break;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     //System.out.write(buffer, 0, len);
-                    textView.setText(new String(buffer, StandardCharsets.UTF_8));
+                    textView.append(new String(outBuffer, StandardCharsets.UTF_8));
+                    try {
+                        if (!((len = consoleError.read(errorBuffer)) > 0)) break;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //System.out.write(buffer, 0, len);
+                    textView.append(new String(errorBuffer, StandardCharsets.UTF_8));
                 }
             }
         });
