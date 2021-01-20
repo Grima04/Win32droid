@@ -42,7 +42,7 @@ as everyone pleases and commands.
 * Mesa LLVMpipe seems to have some problems with the Wine D3D wrapper, causing random crashes/freezes (e.g.: Silent Hill 2 crashes after a few seconds to a few minutes max.).
 * Running the Wine Desktop with another resolution than the game's default full screen resolution might cause crashes.
 * Passing resolution arguments to XServer XSDL isn't supported, so setting up a custom resolution profile in XServer XSDL is required before changing the Wine Desktop resolution, otherwise Wine just renders a small window.
-* Running XServer XSDL and Wine a different resolutions will cause problems, so please **make sure to run Wine and XServerXSDL at the _same_ resolution**.
+* Running XServer XSDL and Wine at different resolutions will cause problems, so please **make sure to run Wine and XServerXSDL at the _same_ resolution**.
 * Some installers don't work, so it is **_recommended_** to provide your program in a **_portable format_** if possible (e.g.: portable .exe, game preinstalled in folder format).
 
 ----
