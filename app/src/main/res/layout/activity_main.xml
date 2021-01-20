@@ -7,6 +7,18 @@
     android:background="#424141"
     tools:context="com.grima04.win32droid.MainActivity">
 
+    <Button
+        android:id="@+id/updateBox86"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="80dp"
+        android:layout_marginTop="90dp"
+        android:background="#FF0000"
+        android:text="Update box86"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/height"
         android:layout_width="100dp"
@@ -38,10 +50,10 @@
         android:id="@+id/stopEmulation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="90dp"
         android:background="#FF0000"
         android:text="Stop"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -110,7 +122,7 @@
         android:layout_height="23dp"
         android:layout_marginEnd="66dp"
         android:layout_marginStart="64dp"
-        android:text="Use Hardware Rendering (LOAX)"
+        android:text="Use GPU (Turnip KGSL - Adreno only)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/softwareRendering" />
@@ -129,14 +141,13 @@
 
     <TextView
         android:id="@+id/terminalOutput"
-        android:layout_width="377dp"
-        android:layout_height="300dp"
-        android:layout_marginBottom="18dp"
-        android:layout_marginEnd="18dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginStart="55dp"
+        android:gravity="bottom"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/terminalTitle" />
 
@@ -170,9 +181,10 @@
         android:id="@+id/terminalTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="20dp"
         android:text="Terminal output (read only):"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/width" />
 

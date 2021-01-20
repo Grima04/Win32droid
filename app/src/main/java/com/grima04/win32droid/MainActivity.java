@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     protected static Process setupProcess = null;
     protected static ProcessBuilder emulationProcessBuilder = null;
     protected static Process emulationProcess = null;
+    protected static ProcessBuilder updateBox86ProcessBuilder;
+    protected static Process updateBox86Process;
     protected static BufferedWriter shellWriter = null;
     protected static boolean printConsole = true;
     protected static Switch hardwareRendering;
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     protected static Button stop;
     protected static Button winecfg;
     protected static Button regedit;
+    protected static Button updateBox86;
     protected static long processPID = -1;
 
     @Override
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         stop = (Button) findViewById(R.id.stopEmulation);
         winecfg = (Button) findViewById(R.id.winecfg);
         regedit = (Button) findViewById(R.id.regedit);
+        updateBox86 = (Button) findViewById(R.id.updateBox86);
         softwareRendering = (Switch) findViewById(R.id.softwareRendering);
         hardwareRendering = (Switch) findViewById(R.id.hardwareRendering);
         useGL4ES = (Switch) findViewById(R.id.useGL4ES);
@@ -157,6 +161,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        updateBox86.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateBox86();
+            }
+        });
+
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -227,30 +238,53 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static void printConsoleOutput(Process process, TextView textView){
-        InputStream consoleOut = process.getInputStream();
-        InputStream consoleError = process.getErrorStream();
+        //InputStream consoleOut = process.getInputStream();
+        //InputStream consoleError = process.getErrorStream();
+        BufferedReader outputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                byte[] outBuffer = new byte[2048];
+                try{
+                    String consoleText = null;
+                    while((consoleText = outputReader.readLine()) != null){
+                        textView.setText(consoleText+"\n");
+                        System.out.println(consoleText);
+                    }
+                    while((consoleText = errorReader.readLine()) != null){
+                        textView.setText(consoleText+"\n");
+                        System.out.println(consoleText);
+                    }
+                } catch (IndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                } catch (Exception f){
+                    //
+                }
+
+
+                /*byte[] outBuffer = new byte[2048];
                 byte[] errorBuffer = new byte[2048];
                 int len = -1;
                 while(printConsole){
                     try {
-                        if (!((len = consoleOut.read(outBuffer)) > 0)) break;
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        if (!((len = consoleOut.read(outBuffer)) > 0 )) break;
+                        //System.out.write(outBuffer, 0, len);
+                        textView.append(new String(outBuffer, StandardCharsets.UTF_8));
+                    } catch (Exception e) {
+                        System.out.println(e);
                     }
-                    //System.out.write(buffer, 0, len);
-                    textView.append(new String(outBuffer, StandardCharsets.UTF_8));
+
                     try {
-                        if (!((len = consoleError.read(errorBuffer)) > 0)) break;
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        if (!((len = consoleError.read(errorBuffer)) > 0 )) break;
+                        //System.out.write(errorBuffer, 0, len);
+                        textView.append(new String(errorBuffer, StandardCharsets.UTF_8));
+                    } catch (Exception e) {
+                        System.out.println(e);
                     }
-                    //System.out.write(buffer, 0, len);
-                    textView.append(new String(errorBuffer, StandardCharsets.UTF_8));
-                }
+
+                }*/
+
             }
         });
         thread.start();
@@ -328,6 +362,55 @@ public class MainActivity extends AppCompatActivity {
             pid = -1;
         }
         return pid;
+    }
+
+    private void updateBox86(){
+        isRooted = isDeviceRooted();
+        if(isRooted==true){
+            Toast toastBeginUpdate = Toast.makeText(getApplicationContext(),"Updating box86 ...",Toast.LENGTH_SHORT);
+            try {
+                printConsole = true;
+                updateBox86ProcessBuilder = new ProcessBuilder("/bin/sh");
+                updateBox86Process = updateBox86ProcessBuilder.start();
+                //processPID = getPid(emulationProcess);
+                shellWriter = new BufferedWriter(new OutputStreamWriter(updateBox86Process.getOutputStream()));
+                //Get root permissions
+                shellWriter.write("su");
+                shellWriter.newLine();
+                shellWriter.flush();
+                //cd into the Ubuntu rootfs
+                shellWriter.write("cd /data/data/com.grima04.win32droid/files");
+                shellWriter.newLine();
+                shellWriter.flush();
+                //Start the chroot jail environment via premade script
+                shellWriter.write("sh chroot.sh");
+                shellWriter.newLine();
+                shellWriter.flush();
+                //Remove previous source code folder
+                shellWriter.write("rm -r box86");
+                shellWriter.newLine();
+                shellWriter.flush();
+                //Download box86 source code
+                shellWriter.write("git clone https://github.com/ptitSeb/box86");
+                shellWriter.newLine();
+                shellWriter.flush();
+                //Build & setup box86
+                shellWriter.write("cd box86 && mkdir build && cd build && cmake .. -DARM_DYNAREC=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo && make -j4 install");
+                shellWriter.newLine();
+                shellWriter.flush();
+                //
+                shellWriter.write("echo 'Done! You can now safely start Wine'");
+                shellWriter.newLine();
+                shellWriter.flush();
+
+                //Print the shell output in the Android Studio Logcat and on the application TextView
+                printConsoleOutput(updateBox86Process,terminal);
+            }catch(Exception e){
+                System.out.println(e);
+            }
+        }else{
+            Toast toastFailed = Toast.makeText(getApplicationContext(),"Failed to update box86.\nAre you rooted?",Toast.LENGTH_LONG);
+        }
     }
 
     private void startEmulation(Button button){
