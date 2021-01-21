@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         useGL4ES.setEnabled(false);
         hardwareRendering.setEnabled(false);
         cpuAffinity.setEnabled(false);
+        useGalliumHUD.setEnabled(false);
 
         customWidth.setText(getScreenResolution(getApplicationContext()).split("x")[0]);
         customHeight.setText(getScreenResolution(getApplicationContext()).split("x")[1]);
@@ -350,7 +351,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static synchronized long getPid(Process process){
         long pid = -1;
-
         try{
             if (process.getClass().getName().equals("java.lang.UNIXProcess")){
                 Field field = process.getClass().getDeclaredField("pid");
@@ -378,12 +378,8 @@ public class MainActivity extends AppCompatActivity {
                 shellWriter.write("su");
                 shellWriter.newLine();
                 shellWriter.flush();
-                //cd into the Ubuntu rootfs
-                shellWriter.write("cd /data/data/com.grima04.win32droid/files");
-                shellWriter.newLine();
-                shellWriter.flush();
-                //Start the chroot jail environment via premade script
-                shellWriter.write("sh chroot.sh");
+                //cd into the Ubuntu rootfs and start the chroot jail environment via premade script
+                shellWriter.write("cd /data/data/com.grima04.win32droid/files && sh chroot.sh");
                 shellWriter.newLine();
                 shellWriter.flush();
                 //Remove previous source code folder
@@ -398,11 +394,10 @@ public class MainActivity extends AppCompatActivity {
                 shellWriter.write("cd box86 && mkdir build && cd build && cmake .. -DARM_DYNAREC=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo && make -j4 install");
                 shellWriter.newLine();
                 shellWriter.flush();
-                //
+                //Print message to inform the user that the updating process has been completed
                 shellWriter.write("echo 'Done! You can now safely start Wine'");
                 shellWriter.newLine();
                 shellWriter.flush();
-
                 //Print the shell output in the Android Studio Logcat and on the application TextView
                 printConsoleOutput(updateBox86Process,terminal);
             }catch(Exception e){
@@ -419,7 +414,6 @@ public class MainActivity extends AppCompatActivity {
             String wineService = "";
             Toast toastSuccess = Toast.makeText(getApplicationContext(),"Starting emulation ...",Toast.LENGTH_SHORT);
             toastSuccess.show();
-
             //Start the XServer XSDL application
             Intent launchXServerXSDL = getPackageManager().getLaunchIntentForPackage("x.org.server");
             startActivity(launchXServerXSDL);
@@ -432,8 +426,6 @@ public class MainActivity extends AppCompatActivity {
                 wineService = "regedit";
             }
 
-
-
             try {
                 printConsole = true;
                 emulationProcessBuilder = new ProcessBuilder("/bin/sh");
@@ -444,29 +436,20 @@ public class MainActivity extends AppCompatActivity {
                 shellWriter.write("su");
                 shellWriter.newLine();
                 shellWriter.flush();
-                //cd into the Ubuntu rootfs
-                shellWriter.write("cd /data/data/com.grima04.win32droid/files");
+                //cd into the Ubuntu rootfs and start the chroot jail environment via premade script
+                shellWriter.write("cd /data/data/com.grima04.win32droid/files && sh chroot.sh");
                 shellWriter.newLine();
                 shellWriter.flush();
-                //Start the chroot jail environment via premade script
-                shellWriter.write("sh chroot.sh");
+                //Setup XServer XSDL display and audio output
+                shellWriter.write("export DISPLAY=:0 && export PULSE_SERVER=tcp:127.0.0.1:4713");
                 shellWriter.newLine();
                 shellWriter.flush();
-                //Setup XServer XSDL display output
-                shellWriter.write("export DISPLAY=:0");
-                shellWriter.newLine();
-                shellWriter.flush();
-                //Setup XServer XSDL audio output
-                shellWriter.write("export PULSE_SERVER=tcp:127.0.0.1:4713");
-                shellWriter.newLine();
-                shellWriter.flush();
+                //Wait 10s to give XServer XSDL enough time to start up
                 Thread.sleep(10000);
                 //Launch box86 with the Wine explorer, the Wine Desktop size being the fullscreen size of the device
-                //shellWriter.write("env " + getRenderingBackend() + " box86 ~/wine/bin/wine explorer /desktop=win32droid," + getScreenResolution(getApplicationContext()) + " explorer");
                 shellWriter.write("env " + getRenderingBackend() + " " + getMesaOptions() + " box86 ~/wine/bin/wine explorer /desktop=win32droid," + getCustomResolution() + " " + wineService);
                 shellWriter.newLine();
                 shellWriter.flush();
-
                 //Print the shell output in the Android Studio Logcat and on the application TextView
                 printConsoleOutput(emulationProcess,terminal);
             }catch(Exception e){
