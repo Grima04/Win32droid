@@ -89,7 +89,7 @@
         android:text="Display Gallium HUD (CPU,FPS)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/useGL4ES" />
+        app:layout_constraintTop_toBottomOf="@+id/useInterpreter" />
 
     <Button
         android:id="@+id/startEmulation"
@@ -106,12 +106,12 @@
         app:rippleColor="#FF0000" />
 
     <Switch
-        android:id="@+id/useGL4ES"
+        android:id="@+id/useInterpreter"
         android:layout_width="281dp"
         android:layout_height="23dp"
         android:layout_marginEnd="66dp"
         android:layout_marginStart="64dp"
-        android:text="Use GL4ES as OpenGL backend"
+        android:text="Use box86 interpreter (fixes DX9)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hardwareRendering" />
@@ -122,7 +122,7 @@
         android:layout_height="23dp"
         android:layout_marginEnd="66dp"
         android:layout_marginStart="64dp"
-        android:text="Use GPU (Turnip KGSL - Adreno only)"
+        android:text="Use GPU (virgl, Android 9 or lower)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/softwareRendering" />
@@ -159,7 +159,7 @@
         android:layout_marginStart="64dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="CPU affinity (syntax: cpu0-cpu4,cpu8)"
+        android:text="CPU affinity (syntax: x1,x2,x3,...,xn   eg: 4,5,6,7)"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

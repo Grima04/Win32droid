@@ -21,11 +21,9 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     protected static BufferedWriter shellWriter = null;
     protected static boolean printConsole = true;
     protected static Switch hardwareRendering;
-    protected static Switch useGL4ES;
+    protected static Switch useInterpreter;
     protected static Switch softwareRendering;
     protected static Switch useGalliumHUD;
     protected static Switch disableGLSLcache;
@@ -73,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         updateBox86 = (Button) findViewById(R.id.updateBox86);
         softwareRendering = (Switch) findViewById(R.id.softwareRendering);
         hardwareRendering = (Switch) findViewById(R.id.hardwareRendering);
-        useGL4ES = (Switch) findViewById(R.id.useGL4ES);
+        useInterpreter = (Switch) findViewById(R.id.useInterpreter);
         disableGLSLcache = (Switch) findViewById(R.id.disableGLSLcache);
         useGalliumHUD = (Switch) findViewById(R.id.useGalliumHUD);
         customWidth = (EditText) findViewById(R.id.width);
@@ -86,9 +84,8 @@ public class MainActivity extends AppCompatActivity {
         fixRenderingBackendButtons();
 
         //Disable buttons of non implemented functions
-        useGL4ES.setEnabled(false);
-        hardwareRendering.setEnabled(false);
-        cpuAffinity.setEnabled(false);
+        //hardwareRendering.setEnabled(false);
+        //cpuAffinity.setEnabled(false);
         useGalliumHUD.setEnabled(false);
 
         customWidth.setText(getScreenResolution(getApplicationContext()).split("x")[0]);
@@ -178,16 +175,9 @@ public class MainActivity extends AppCompatActivity {
                     Process process = Runtime.getRuntime().exec("su -c am force-stop x.org.server");
                     //Kill box86
                     Process killProcess = Runtime.getRuntime().exec("su -c killall box86");
-                    /*shellWriter.write("box86 ~/wine/bin/wineserver -k");
-                    shellWriter.newLine();
-                    shellWriter.flush();
                     shellWriter.write("echo 'Stopping emulation...'");
                     shellWriter.newLine();
                     shellWriter.flush();
-                    shellWriter.write("exit");
-                    shellWriter.newLine();
-                    shellWriter.flush();
-                    printConsole = false;*/
                     emulationProcess.destroy();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -263,29 +253,6 @@ public class MainActivity extends AppCompatActivity {
                     //
                 }
 
-
-                /*byte[] outBuffer = new byte[2048];
-                byte[] errorBuffer = new byte[2048];
-                int len = -1;
-                while(printConsole){
-                    try {
-                        if (!((len = consoleOut.read(outBuffer)) > 0 )) break;
-                        //System.out.write(outBuffer, 0, len);
-                        textView.append(new String(outBuffer, StandardCharsets.UTF_8));
-                    } catch (Exception e) {
-                        System.out.println(e);
-                    }
-
-                    try {
-                        if (!((len = consoleError.read(errorBuffer)) > 0 )) break;
-                        //System.out.write(errorBuffer, 0, len);
-                        textView.append(new String(errorBuffer, StandardCharsets.UTF_8));
-                    } catch (Exception e) {
-                        System.out.println(e);
-                    }
-
-                }*/
-
             }
         });
         thread.start();
@@ -296,11 +263,11 @@ public class MainActivity extends AppCompatActivity {
         if (softwareRendering.isChecked()){
             envVar = "BOX86_LIBGL=/usr/lib/arm-linux-gnueabihf/software/libGL.so.1";
         }else if (hardwareRendering.isChecked()){
-            envVar = "BOX86_LIBGL=/usr/lib/arm-linux-gnueabihf/accelerated/libGL-virgl-es2gl.so.1 LIBGL_DRIVERS_PATH=/usr/lib/arm-linux-gnueabihf/accelerated LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=virpipe";
+            envVar = "BOX86_LIBGL=/usr/lib/arm-linux-gnueabihf/accelerated/libGL.so.1 VTEST_SOCK=";
         }
-        if (useGL4ES.isChecked()){
+        /*if (useGL4ES.isChecked()){
             envVar = envVar.split(" ")[1] + " " + envVar.split(" ")[2] + " BOX86_LIBGL=/usr/lib/arm-linux-gnueabihf/libGL-gl4es.so.1";
-        }
+        }*/
         return envVar;
     }
 
@@ -342,7 +309,17 @@ public class MainActivity extends AppCompatActivity {
         if ((cpuAffinity.getText()+"").contains("CPU")==true){
             res = "";
         }else if ((cpuAffinity.getText()+"") != ""){
-            res = "taskset --cpu-list " + cpuAffinity.getText();
+            res = "taskset -c " + cpuAffinity.getText() + " ";
+        }else{
+            res = "";
+        }
+        return res;
+    }
+
+    private static String getEmulationMode(){
+        String res = "";
+        if(useInterpreter.isChecked()){
+            res = "BOX86_DYNAREC=0 ";
         }else{
             res = "";
         }
@@ -374,6 +351,10 @@ public class MainActivity extends AppCompatActivity {
                 updateBox86Process = updateBox86ProcessBuilder.start();
                 //processPID = getPid(emulationProcess);
                 shellWriter = new BufferedWriter(new OutputStreamWriter(updateBox86Process.getOutputStream()));
+                //Print info to Terminal
+                shellWriter.write("echo 'Downloading and updating box86. Please wait...'");
+                shellWriter.newLine();
+                shellWriter.flush();
                 //Get root permissions
                 shellWriter.write("su");
                 shellWriter.newLine();
@@ -447,7 +428,7 @@ public class MainActivity extends AppCompatActivity {
                 //Wait 10s to give XServer XSDL enough time to start up
                 Thread.sleep(10000);
                 //Launch box86 with the Wine explorer, the Wine Desktop size being the fullscreen size of the device
-                shellWriter.write("env " + getRenderingBackend() + " " + getMesaOptions() + " box86 ~/wine/bin/wine explorer /desktop=win32droid," + getCustomResolution() + " " + wineService);
+                shellWriter.write("env BOX86_NOSIGSEGV=1 " + getEmulationMode() + getRenderingBackend() + " " + getMesaOptions() + " " + getTaskset() + " box86 ~/wine/bin/wine explorer /desktop=win32droid," + getCustomResolution() + " " + wineService);
                 shellWriter.newLine();
                 shellWriter.flush();
                 //Print the shell output in the Android Studio Logcat and on the application TextView
