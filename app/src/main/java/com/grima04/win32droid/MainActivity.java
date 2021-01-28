@@ -49,12 +49,12 @@ public class MainActivity extends AppCompatActivity {
     protected static EditText customWidth;
     protected static EditText customHeight;
     protected static EditText cpuAffinity;
-    protected static TextView terminal;
-    protected static Button start;
-    protected static Button stop;
-    protected static Button winecfg;
-    protected static Button regedit;
-    protected static Button updateBox86;
+    protected TextView terminal;
+    protected Button start;
+    protected Button stop;
+    protected Button winecfg;
+    protected Button regedit;
+    protected Button updateBox86;
     protected static long processPID = -1;
 
     @Override
@@ -78,13 +78,12 @@ public class MainActivity extends AppCompatActivity {
         customHeight = (EditText) findViewById(R.id.height);
         cpuAffinity = (EditText) findViewById(R.id.cpuAffinity);
         final String privatePath = getFilesDir().toString();
-        final String obbPath = getObbDir().toString()+"/ubuntu.focal.armhf.rootfs.obb";
 
         //Disable Hardware Rendering when selecting Software Rendering and vice versa
         fixRenderingBackendButtons();
 
         //Disable buttons of non implemented functions
-        //hardwareRendering.setEnabled(false);
+        hardwareRendering.setEnabled(false);
         //cpuAffinity.setEnabled(false);
         useGalliumHUD.setEnabled(false);
 
@@ -129,7 +128,9 @@ public class MainActivity extends AppCompatActivity {
                     unpackingFailed.show();
                     try {
                         //emulationProcess = Runtime.getRuntime().exec("rm -r " + privatePath);
-                    }catch(Exception f){}
+                    }catch(Exception f){
+                        f.printStackTrace();
+                    }
                 }
 
             }
@@ -196,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(output);
             if (output != null && output.toLowerCase().contains("uid=0")) return true;
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         } finally {
             if (process != null) process.destroy();
         }return false;
@@ -208,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
         int height = 0;
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Point resolution = new Point();
+        assert windowManager != null;
         windowManager.getDefaultDisplay().getRealSize(resolution);
         //Fix wrong resolution if app is started in portrait mode
         if(resolution.x > resolution.y){
@@ -306,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static String getTaskset(){
         String res = "";
-        if ((cpuAffinity.getText()+"").contains("CPU")==true){
+        if ((cpuAffinity.getText() + "").contains("CPU")){
             res = "";
         }else if ((cpuAffinity.getText()+"") != ""){
             res = "taskset -c " + cpuAffinity.getText() + " ";
@@ -343,8 +345,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateBox86(){
         isRooted = isDeviceRooted();
-        if(isRooted==true){
+        if(isRooted){
             Toast toastBeginUpdate = Toast.makeText(getApplicationContext(),"Updating box86 ...",Toast.LENGTH_SHORT);
+            toastBeginUpdate.show();
             try {
                 printConsole = true;
                 updateBox86ProcessBuilder = new ProcessBuilder("/bin/sh");
@@ -382,16 +385,17 @@ public class MainActivity extends AppCompatActivity {
                 //Print the shell output in the Android Studio Logcat and on the application TextView
                 printConsoleOutput(updateBox86Process,terminal);
             }catch(Exception e){
-                System.out.println(e);
+                e.printStackTrace();
             }
         }else{
             Toast toastFailed = Toast.makeText(getApplicationContext(),"Failed to update box86.\nAre you rooted?",Toast.LENGTH_LONG);
+            toastFailed.show();
         }
     }
 
     private void startEmulation(Button button){
         isRooted = isDeviceRooted();
-        if (isRooted==true){
+        if (isRooted){
             String wineService = "";
             Toast toastSuccess = Toast.makeText(getApplicationContext(),"Starting emulation ...",Toast.LENGTH_SHORT);
             toastSuccess.show();
@@ -434,7 +438,7 @@ public class MainActivity extends AppCompatActivity {
                 //Print the shell output in the Android Studio Logcat and on the application TextView
                 printConsoleOutput(emulationProcess,terminal);
             }catch(Exception e){
-                System.out.println(e);
+                e.printStackTrace();
             }
 
 

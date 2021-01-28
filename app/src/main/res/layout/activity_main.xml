@@ -111,7 +111,7 @@
         android:layout_height="23dp"
         android:layout_marginEnd="66dp"
         android:layout_marginStart="64dp"
-        android:text="Use box86 interpreter (fixes DX9)"
+        android:text="Use box86 interpreter mode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hardwareRendering" />
@@ -134,7 +134,7 @@
         android:layout_marginEnd="66dp"
         android:layout_marginStart="64dp"
         android:layout_marginTop="80dp"
-        android:text="Use Software Rendering (LLVMpipe)"
+        android:text="Use software rendering (LLVMpipe)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/startEmulation" />
