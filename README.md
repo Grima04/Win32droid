@@ -1,6 +1,6 @@
 # Win32droid - box86 & Wine based Win32 emulator for Android
 ----
-## Before we start with the explanations, I want to give a huge shout-out to ptitSeb (https://github.com/ptitSeb) and the Wine developers, who developed the x86 Linux Userspace Emulator box86 and the Windows compatibility layer respectively. Without the constant dedication to box86 by ptitSeb and his efforts to get Wine x86 to run on box86, aswell as the constant improvements to Wine by the Wine devs, this project would have never been possible.
+### Before we start with the explanations, I want to give a huge thanks to [ptitSeb](https://github.com/ptitSeb) and the [Wine developers](https://wiki.winehq.org/Who%27s_Who), who developed the x86 Linux Userspace Emulator box86 and the Windows compatibility layer respectively. Without the constant dedication to box86 by ptitSeb and his efforts to get Wine x86 to run on box86, aswell as the constant improvements to Wine by the Wine devs, this project would have never been possible.
 ## FAQ:
 ### What is Win32droid?
 Win32droid is an experimental software to emulate Windows x86 games on **_rooted_** Android ARM/ARM64 devices, based on the OpenSource projects Wine and box86
@@ -23,6 +23,7 @@ Don't expect to run GTA IV or something similar on this emulator.<br/>
 As a reference you can take the following results that I got on a Snapdragon 865 device:<br/>
 * Silent Hill 2, safe settings (minimum graphics, 640x480) runs at a _stunning_ 8-13 FPS in the intro scene (restroom scene & outside)<br/>
 * Cinebench R11.5 32 Bit Mode, Multicore CPU benchmark: Score = 2.30
+* Unigine Valley running with interpreter mode at around 2 to 5 seconds per frame (you read that right, **seconds per frame**)
 
 ### Will 3D Acceleration be supported in the future?
 I would like to implement it, but at the moment I can't do much about it. I am a simple dev, who has recently gotten into Linux and Java coding. I don't know how to code in C/C++ (yet) and I don't have any graphics API knowledge (OpenGL, Vulkan, ...),
@@ -36,7 +37,7 @@ as everyone pleases and commands.
 
 ----
 ## Known Issues:
-* Software requiring DirectX 9 (and probably also DX10/11) currently crashes / doesn't boot at all. A fix for some DX9 applications is to use box86 in interpreter mode, however this will slow down the emulation to a crawl.
+* Software requiring DirectX 9 (and probably also DX10/11) currently crashes / doesn't boot at all. A fix for some DX9 applications is to use box86 in interpreter mode, however this will slow down the emulation to a crawl. An example would be Unigine Valley (DX9 and DX11 benchmark) which only runs when using interpreter mode.
 * Mesa LLVMpipe seems to have some problems with the Wine D3D wrapper, causing random crashes/freezes (e.g.: Silent Hill 2 crashes after a few seconds to a few minutes max.).
 * Running the Wine Desktop with another resolution than the game's default full screen resolution might cause crashes.
 * Passing resolution arguments to XServer XSDL isn't supported, so setting up a custom resolution profile in XServer XSDL is required before changing the Wine Desktop resolution, otherwise Wine just renders a small window.
@@ -48,12 +49,11 @@ as everyone pleases and commands.
 ### Short-term goals
 * Fix bugs of course :)
 * Try to clean up the rootfs OBB, to shrink its size and consume less phone storage
-* Try to implement Mesa DRM KGSL as soon as it is fixed to attempt to get GPU acceleration to work on Qualcomm devices with DRM
+* Try to find and implement an existing solution to the 3D acceleration problem
 
 ### Mid-term goals
 * Implement Proot in order to make the app compatible with non-rooted devices
 * Provide a better UI and/or rewrite it and create a proper options menu
-* Try to get the LOAX-Server project to work with Win32droid, to provide hardware acceleration via OpenGL ES 2 and combine it with a wrapper for Desktop OpenGL (like GL4ES, Regal or virgl-vtest as GL to GLES translators)
 
 ### Long-term goals
 * Learn C/C++ and OpenGL to be able to port virgl or a similar project to Android in order to provide a solid, hardware accelerated OpenGL backend for games.
@@ -63,7 +63,7 @@ as everyone pleases and commands.
 Installation instructions:
 * **_PLEASE READ THE ENTIRE INSTRUCTIONS BEFORE BEGINNING THE INSTALLATION_**
 
-* Install XServer XSDL and BusyBox (https://play.google.com/store/apps/details?id=x.org.server and https://play.google.com/store/apps/details?id=stericson.busybox)
+* Install [XServer XSDL](https://play.google.com/store/apps/details?id=x.org.server) and [BusyBox](https://play.google.com/store/apps/details?id=stericson.busybox)
 * **_Please make sure that BusyBox is installed properly before continuing, otherwise the setup will not work properly and you will need to wipe the Win32droid data before attempting a fresh installation. Please note that BusyBox might get uninstalled after a device reboot, so always make sure that it is installed before using Win32droid_**
 * Download and install the Wine32droid APK from the latest release
 * Download the .obb from the latest release and put it into the following directory (create it if it doesn't exist): /storage/emulated/0/Android/obb/com.grima04.wine32droid
@@ -79,11 +79,24 @@ Installation instructions:
 * **_I am not reponsible for any damage/harm caused to you or your device, data, etc resulting from the usage of this app. The emulation is very taxing on the CPU, so keep your CPU and battery temperatures under constant observation_**
 
 ----
+## Credits & Third Party components:
+* [Ubuntu on Termux](https://github.com/EXALAB/Anlinux-Resources/blob/master/Scripts/Installer/Ubuntu/ubuntu.sh) GPL-2.0 Licence
+* [Ubuntu rootfs](https://github.com/EXALAB/Anlinux-Resources/blob/master/Rootfs/Ubuntu/armhf/ubuntu-rootfs-armhf.tar.xz) GPL-2.0 Licence
+* [Termux armhf on aarch64 devices](https://www.youtube.com/watch?v=crP4K8p9Z50)
+* [box86 emulator](https://github.com/ptitSeb/box86) MIT Licence
+* [Mesa LLVMpipe driver](https://gitlab.freedesktop.org/mesa/mesa) MIT Licence (for the part used in this project)
+* [Wine](https://www.winehq.org) LGPL Licence
+* [Play on Linux prebuilt x86 Wine](https://www.playonlinux.com/wine) LGPL Licence
+* [XServer XSDL](https://github.com/pelya/xserver-xsdl) Modified MIT Licence (X.Org version)
+* [BusyBox for Android](https://play.google.com/store/apps/details?id=stericson.busybox) GPL-2.0 Licence
+----
 ## Gallery:
 * Main UI
 ![](https://github.com/Grima04/Win32droid/blob/master/Gallery/Main_UI.jpg?raw=true)
 * Cinebench R11.5
 ![](https://github.com/Grima04/Win32droid/blob/master/Gallery/Cinebench_R_11_5.jpg?raw=true)
+* Unigine Valley
+![](https://github.com/Grima04/Win32droid/blob/master/Gallery/Unigine_Valley.jpg?raw=true)
 * Silent Hill 2
 ![](https://github.com/Grima04/Win32droid/blob/master/Gallery/Silent_Hill_2_Title_Screen.jpg?raw=true)
 ![](https://github.com/Grima04/Win32droid/blob/master/Gallery/Silent_Hill_2_Intro_Scene_Mirror.jpg?raw=true)
