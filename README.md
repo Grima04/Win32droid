@@ -31,9 +31,7 @@ so don't keep your expectations too high. I am currently also busy with my unive
 The only viable possibility that I know of to **_maybe_** get 3D hardware acceleration would be to compile and install Mesa DRM/DRI in order to be able to use the GPU directly, however not a lot of devices currently support DRM. Although my device (Snapdragon 865 SoC) has DRM, it requires Mesa to be compiled for Freedreno with a KGSL DRM backend, since Qualcomm currently uses a custom DRM implementation on Android, however the Mesa compilation for the KGSL target currently fails, so I have no way of testing it. Another idea would be to get some kind of GL-over-the-network software to run but at the moment the projects that can accomplish this are in a really bad state and/or abandoned (see virglrenderer-android or android-gl-streaming), so it won't be possible to use this method in the near future.
 
 ### ETA for xyz WEN?
-No, there will be no ETAs whatsoever. Like many other devs already say/said, ETAs and people asking every second for an "ETA WEN?" have been a plague and only slowed down development or even
-made some devs quit if it was too toxic. Please understand that we also have lives, a family, jobs/studies, etc. We aren't some aliens sitting 24/7 in front of the PC and spitting out code
-as everyone pleases and commands.
+No, there will be no ETAs whatsoever.
 
 ----
 ## Known Issues:
