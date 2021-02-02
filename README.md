@@ -64,9 +64,9 @@ Installation instructions:
 * Install [XServer XSDL](https://play.google.com/store/apps/details?id=x.org.server) and [BusyBox](https://play.google.com/store/apps/details?id=stericson.busybox)
 * **_Please make sure that BusyBox is installed properly before continuing, otherwise the setup will not work properly and you will need to wipe the Win32droid data before attempting a fresh installation. Please note that BusyBox might get uninstalled after a device reboot, so always make sure that it is installed before using Win32droid_**
 * Download and install the Win32droid APK from the latest release
-* Download the .obb from the latest release and put it into the following directory (create it if it doesn't exist): /storage/emulated/0/Android/obb/com.grima04.wine32droid
+* Download the .obb from the latest release and put it into the following directory (create it if it doesn't exist): /storage/emulated/0/Android/obb/com.grima04.win32droid
 * Launch the App and wait for the setup process to finish (keep an eye on the Terminal at the bottom)
-* Start Wine with the WINE button, wait like half a minute and then return to the Wine32droid App and press STOP (this step is only required once for the first startup after a fresh installation)
+* Start Wine with the WINE button, wait like half a minute and then return to the Win32droid App and press STOP (this step is only required once for the first startup after a fresh installation)
 * Afterwards, start Wine again. Now you should see the Wine Desktop and the Wine Explorer showing up
 * Now you can browse through your internal storage and launch a Windows program
 * If your program requires OpenGL or DirectX, enable the software rendering switch before starting Wine
