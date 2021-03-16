@@ -35,9 +35,14 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
@@ -45,6 +50,8 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -56,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
     protected static Process emulationProcess = null;
     protected static ProcessBuilder updateBox86ProcessBuilder;
     protected static Process updateBox86Process;
+    protected static ProcessBuilder applyPatchProcessBuilder;
+    protected static Process applyPatchProcess;
     protected static BufferedWriter shellWriter = null;
     protected static boolean printConsole = true;
     protected static Switch hardwareRendering;
@@ -72,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     protected Button winecfg;
     protected Button regedit;
     protected Button updateBox86;
+    protected Button applyPatch;
     protected static long processPID = -1;
 
     @Override
@@ -86,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         winecfg = (Button) findViewById(R.id.winecfg);
         regedit = (Button) findViewById(R.id.regedit);
         updateBox86 = (Button) findViewById(R.id.updateBox86);
+        applyPatch = (Button) findViewById(R.id.applyPatch);
         softwareRendering = (Switch) findViewById(R.id.softwareRendering);
         hardwareRendering = (Switch) findViewById(R.id.hardwareRendering);
         useInterpreter = (Switch) findViewById(R.id.useInterpreter);
@@ -100,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         fixRenderingBackendButtons();
 
         //Disable buttons of non implemented functions
-        hardwareRendering.setEnabled(false);
+        //hardwareRendering.setEnabled(false);
         //cpuAffinity.setEnabled(false);
         useGalliumHUD.setEnabled(false);
 
@@ -118,9 +129,8 @@ public class MainActivity extends AppCompatActivity {
                     setupProcessBuilder = new ProcessBuilder("/bin/sh");
                     setupProcess = setupProcessBuilder.start();
                     BufferedWriter shellWriter = new BufferedWriter(new OutputStreamWriter(setupProcess.getOutputStream()));
-                    shellWriter.write("su");
-                    shellWriter.newLine();
-                    shellWriter.flush();
+                    //shellWriter.write("su");
+                    //shellWriter.flush();
                     shellWriter.write("cp /sdcard/Android/obb/com.grima04.win32droid/ubuntu.focal.armhf.rootfs.obb /data/data/com.grima04.win32droid/files");
                     shellWriter.newLine();
                     shellWriter.flush();
@@ -150,7 +160,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-            }
+            }/*else{
+                Toast starting = Toast.makeText(getApplicationContext(),"Starting to extract the OBB. Please wait...",Toast.LENGTH_LONG);
+                if(extractOBB()){
+                    Toast success = Toast.makeText(getApplicationContext(),"Successfully extracted the Ubuntu rootfs OBB!",Toast.LENGTH_LONG);
+                    success.show();
+                }else{
+                    Toast failed = Toast.makeText(getApplicationContext(),"Successfully extracted the Ubuntu rootfs OBB!",Toast.LENGTH_LONG);
+                    failed.show();
+                }
+            }*/
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -200,6 +219,13 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        applyPatch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                applyPatch();
             }
         });
     }
@@ -345,6 +371,44 @@ public class MainActivity extends AppCompatActivity {
         return res;
     }
 
+    private static boolean extractOBB(){
+        InputStream inputStream = null;
+        ZipInputStream zipInputStream = null;
+        ZipEntry zipEntry = null;
+        byte[] buffer = new byte[1024];
+        int counter = 0;
+        String filename = "";
+        File directory = null;
+        FileOutputStream fileOutputStream = null;
+        try{
+            inputStream = new FileInputStream("/sdcard/Android/obb/com.grima04.win32droid/ubuntu.focal.armhf.rootfs.obb");
+            zipInputStream = new ZipInputStream(new BufferedInputStream(inputStream));
+            while((zipEntry = zipInputStream.getNextEntry()) != null){
+                filename = zipEntry.getName();
+
+                if(zipEntry.isDirectory()){
+                    directory = new File("/data/data/com.grima04.win32droid/files/" + filename);
+                    directory.mkdirs();
+                    continue;
+                }
+
+                fileOutputStream = new FileOutputStream("/data/data/com.grima04.win32droid/files/" + filename);
+
+                while((counter = zipInputStream.read(buffer)) != -1){
+                    fileOutputStream.write(buffer,0,counter);
+                }
+
+                fileOutputStream.close();
+                zipInputStream.closeEntry();
+            }
+            zipInputStream.close();
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     private static synchronized long getPid(Process process){
         long pid = -1;
         try{
@@ -358,6 +422,44 @@ public class MainActivity extends AppCompatActivity {
             pid = -1;
         }
         return pid;
+    }
+
+    private void applyPatch(){
+        isRooted = isDeviceRooted();
+        if(isRooted){
+            Toast toastApplyPatch = Toast.makeText(getApplicationContext(),"Applying patch ...",Toast.LENGTH_SHORT);
+            toastApplyPatch.show();
+            try{
+                printConsole = true;
+                applyPatchProcessBuilder = new ProcessBuilder("/bin/sh");
+                applyPatchProcess = applyPatchProcessBuilder.start();
+                shellWriter = new BufferedWriter(new OutputStreamWriter(applyPatchProcess.getOutputStream()));
+                shellWriter.write("su");
+                shellWriter.newLine();
+                shellWriter.flush();
+                shellWriter.write("cp /sdcard/Android/obb/com.grima04.win32droid/patch.obb /data/data/com.grima04.win32droid/files");
+                shellWriter.newLine();
+                shellWriter.flush();
+                shellWriter.write("cd /data/data/com.grima04.win32droid/files");
+                shellWriter.newLine();
+                shellWriter.flush();
+                shellWriter.write("unzip patch.obb");
+                shellWriter.newLine();
+                shellWriter.flush();
+                shellWriter.write("rm patch.obb");
+                shellWriter.newLine();
+                shellWriter.flush();
+                shellWriter.write("echo 'Done! You can now safely start Wine'");
+                shellWriter.newLine();
+                shellWriter.flush();
+                shellWriter.write("exit");
+                shellWriter.newLine();
+                shellWriter.flush();
+                printConsoleOutput(applyPatchProcess,terminal);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     private void updateBox86(){
@@ -449,7 +551,7 @@ public class MainActivity extends AppCompatActivity {
                 //Wait 10s to give XServer XSDL enough time to start up
                 Thread.sleep(10000);
                 //Launch box86 with the Wine explorer, the Wine Desktop size being the fullscreen size of the device
-                shellWriter.write("env BOX86_NOSIGSEGV=1 " + getEmulationMode() + getRenderingBackend() + " " + getMesaOptions() + " " + getTaskset() + " box86 ~/wine/bin/wine explorer /desktop=win32droid," + getCustomResolution() + " " + wineService);
+                shellWriter.write("env BOX86_ALLOWMISSINGLIBS=1 BOX86_FIX_64BIT_INODES=1 " + getEmulationMode() + getRenderingBackend() + " " + getMesaOptions() + " " + getTaskset() + " box86 ~/wine/bin/wine explorer /desktop=win32droid," + getCustomResolution() + " " + wineService);
                 shellWriter.newLine();
                 shellWriter.flush();
                 //Print the shell output in the Android Studio Logcat and on the application TextView
