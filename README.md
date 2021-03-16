@@ -31,9 +31,7 @@ so don't keep your expectations too high. I am currently also busy with my unive
 The only viable possibility that I know of to **_maybe_** get 3D hardware acceleration would be to compile and install Mesa DRM/DRI in order to be able to use the GPU directly, however not a lot of devices currently support DRM. Although my device (Snapdragon 865 SoC) has DRM, it requires Mesa to be compiled for Freedreno with a KGSL DRM backend, since Qualcomm currently uses a custom DRM implementation on Android, however the Mesa compilation for the KGSL target currently fails, so I have no way of testing it. Another idea would be to get some kind of GL-over-the-network software to run but at the moment the projects that can accomplish this are in a really bad state and/or abandoned (see virglrenderer-android or android-gl-streaming), so it won't be possible to use this method in the near future.
 
 ### ETA for xyz WEN?
-No, there will be no ETAs whatsoever. Like many other devs already say/said, ETAs and people asking every second for an "ETA WEN?" have been a plague and only slowed down development or even
-made some devs quit if it was too toxic. Please understand that we also have lives, a family, jobs/studies, etc. We aren't some aliens sitting 24/7 in front of the PC and spitting out code
-as everyone pleases and commands.
+No, there will be no ETAs whatsoever.
 
 ----
 ## Known Issues:
@@ -65,10 +63,10 @@ Installation instructions:
 
 * Install [XServer XSDL](https://play.google.com/store/apps/details?id=x.org.server) and [BusyBox](https://play.google.com/store/apps/details?id=stericson.busybox)
 * **_Please make sure that BusyBox is installed properly before continuing, otherwise the setup will not work properly and you will need to wipe the Win32droid data before attempting a fresh installation. Please note that BusyBox might get uninstalled after a device reboot, so always make sure that it is installed before using Win32droid_**
-* Download and install the Wine32droid APK from the latest release
-* Download the .obb from the latest release and put it into the following directory (create it if it doesn't exist): /storage/emulated/0/Android/obb/com.grima04.wine32droid
+* Download and install the Win32droid APK from the latest release
+* Download the .obb from the latest release and put it into the following directory (create it if it doesn't exist): /storage/emulated/0/Android/obb/com.grima04.win32droid
 * Launch the App and wait for the setup process to finish (keep an eye on the Terminal at the bottom)
-* Start Wine with the WINE button, wait like half a minute and then return to the Wine32droid App and press STOP (this step is only required once for the first startup after a fresh installation)
+* Start Wine with the WINE button, wait like half a minute and then return to the Win32droid App and press STOP (this step is only required once for the first startup after a fresh installation)
 * Afterwards, start Wine again. Now you should see the Wine Desktop and the Wine Explorer showing up
 * Now you can browse through your internal storage and launch a Windows program
 * If your program requires OpenGL or DirectX, enable the software rendering switch before starting Wine
