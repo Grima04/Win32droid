@@ -18,7 +18,7 @@ To get a better idea of what might be able to run or boot, please refer to the b
 
 ### How fast is the emulator?
 Don't expect this to be fast. While the box86 dynamic recompiler is quite decent and fast, the main bottleneck at the moment is the graphics backend. 
-Currently only software rendering via Mesa LLVMpipe is supported, so games, especially 3D ones will run **_SLOW_**. 
+Currently only software rendering via Mesa LLVMpipe is supported, so games, especially 3D ones will run **_SLOW_**. There is also an option to use virgl to get 3D acceleration but the state of virgl on Android is currently not very good and using virgl will cause a lot of graphical issues.
 Don't expect to run GTA IV or something similar on this emulator.<br/>
 As a reference you can take the following results that I got on a Snapdragon 865 device:<br/>
 * Silent Hill 2, safe settings (minimum graphics, 640x480) runs at a _stunning_ 8-13 FPS in the intro scene (restroom scene & outside)<br/>
@@ -27,16 +27,20 @@ As a reference you can take the following results that I got on a Snapdragon 865
 
 ### Will 3D Acceleration be supported in the future?
 I would like to implement it, but at the moment I can't do much about it. I am a simple dev, who has recently gotten into Linux and Java coding. I don't know how to code in C/C++ (yet) and I don't have any graphics API knowledge (OpenGL, Vulkan, ...),
-so don't keep your expectations too high. I am currently also busy with my university studies, so I can't dedicate much time (if at all) to this project and even less into acquiring and mastering a new coding language and graphics API. <br/>
-The only viable possibility that I know of to **_maybe_** get 3D hardware acceleration would be to compile and install Mesa DRM/DRI in order to be able to use the GPU directly, however not a lot of devices currently support DRM. Although my device (Snapdragon 865 SoC) has DRM, it requires Mesa to be compiled for Freedreno with a KGSL DRM backend, since Qualcomm currently uses a custom DRM implementation on Android, however the Mesa compilation for the KGSL target currently fails, so I have no way of testing it. Another idea would be to get some kind of GL-over-the-network software to run but at the moment the projects that can accomplish this are in a really bad state and/or abandoned (see virglrenderer-android or android-gl-streaming), so it won't be possible to use this method in the near future.
+so don't keep your expectations too high. I am currently also busy with my university studies, so I can't dedicate much time (if at all) to this project and even less into acquiring and mastering a new coding language and graphics API. <br/> 
+A few ideas to be able to provide 3D acceleration in the future would be: <br/>
+-- to update the virglrenderer-android port by mittorn and use the latest virgl source code which would allow us to use full OpenGL 4.3 via emulation ontop of OpenGL ES 3.2. <br/>
+-- to get libhybris to work in order to be able to directly access the Android OpenGL ES GPU drivers and then use a solution like GL4ES or virgl vtest for GL to GLES translation. <br/>
+-- to get the Mesa DRI/DRM driver for Adreno, Mali, etc to work in order to use /dev/dri/card0 to access the GPU and provide a solid OpenGL backend. <br/>
+-- to get the LOAX-Server project to work to provide GLES 2.0 acceleration and then use GL4ES or virgl vtest for GL to GLES translation.
 
 ### ETA for xyz WEN?
 No, there will be no ETAs whatsoever.
 
 ----
 ## Known Issues:
-* Software requiring DirectX 9 (and probably also DX10/11) currently crashes / doesn't boot at all. A fix for some DX9 applications is to use box86 in interpreter mode, however this will slow down the emulation to a crawl. An example would be Unigine Valley (DX9 and DX11 benchmark) which only runs when using interpreter mode.
-* Mesa LLVMpipe seems to have some problems with the Wine D3D wrapper, causing random crashes/freezes (e.g.: Silent Hill 2 crashes after a few seconds to a few minutes max.).
+* Software requiring DirectX is likely to suffer from crashes or won't boot at all. A fix for some DX applications is to use box86 in interpreter mode, however this will slow down the emulation to a crawl. An example would be Unigine Valley (DX9 and DX11 benchmark) which only runs when using interpreter mode and doesn't boot at all with dynarec or Silent Hill 2 which immediately crashes in the menus when using dynarec and only runs properly when using the interpreter.
+It is recommended to use ExaGear for DirectX software until box86 gets patches for those issues.
 * Running the Wine Desktop with another resolution than the game's default full screen resolution might cause crashes.
 * Passing resolution arguments to XServer XSDL isn't supported, so setting up a custom resolution profile in XServer XSDL is required before changing the Wine Desktop resolution, otherwise Wine just renders a small window.
 * Running XServer XSDL and Wine at different resolutions will cause problems, so please **make sure to run Wine and XServerXSDL at the _same_ resolution**.
