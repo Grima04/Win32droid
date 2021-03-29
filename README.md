@@ -45,6 +45,7 @@ It is recommended to use ExaGear for DirectX software until box86 gets patches f
 * Passing resolution arguments to XServer XSDL isn't supported, so setting up a custom resolution profile in XServer XSDL is required before changing the Wine Desktop resolution, otherwise Wine just renders a small window.
 * Running XServer XSDL and Wine at different resolutions will cause problems, so please **make sure to run Wine and XServerXSDL at the _same_ resolution**.
 * Some installers don't work, so it is **_recommended_** to provide your program in a **_portable format_** if possible (e.g.: portable .exe, game preinstalled in folder format). Again, this might be fixed when using interpreter mode, but no guarantee is given whatsoever that it will work.
+* **_At the current state, crashes or freezes in any application are very likely to happen, especially when using DirectX and/or the dynamic recompiler. This doesn't happen on "normal" Linux machines, so it is probably an issue with box86 not working properly on Android kernels. I would still recommend to use ExaGear for now._**
 
 ----
 ## Goals & future plans (goals are subject to changes without notice):
