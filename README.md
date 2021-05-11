@@ -1,7 +1,7 @@
 # Win32droid - box86 & Wine based Win32 emulator for Android
 ----
 ### Before we start with the explanations, I want to give a huge thanks to [ptitSeb](https://github.com/ptitSeb) and the [Wine developers](https://wiki.winehq.org/Who%27s_Who), who developed the x86 Linux Userspace Emulator box86 and the Windows compatibility layer respectively. Without the constant dedication to box86 by ptitSeb and his efforts to get Wine x86 to run on box86, aswell as the constant improvements to Wine by the Wine devs, this project would have never been possible.
-### _Warning: this project is deprecated and will be archived soon due to severe issues with box86 + Wine running inside a chroot on Android kernels. Please refer to this project in the future, which properly implements box86 + Wine port for Android: https://github.com/io12/WineBox86.apk_
+### _Warning: this project is deprecated and will be archived soon due to severe issues with box86 + Wine running inside a chroot on Android kernels. Please refer to this project in the future, which properly implements a box86 + Wine port for Android: https://github.com/io12/WineBox86.apk_
 ## FAQ:
 ### What is Win32droid?
 Win32droid is an experimental software to emulate Windows x86 games on **_rooted_** Android ARM/ARM64 devices, based on the OpenSource projects Wine and box86
